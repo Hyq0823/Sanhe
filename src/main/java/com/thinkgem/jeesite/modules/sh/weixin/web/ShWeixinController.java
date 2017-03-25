@@ -34,6 +34,16 @@ public class ShWeixinController extends BaseController {
 	@Autowired
 	private ShWeixinService shWeixinService;
 	
+	
+	@RequiresPermissions("weixin:shWeixin:view")
+	@RequestMapping(value = "register")
+	public String register(ShWeixin shWeixin, Model model) {
+		model.addAttribute("shWeixin", shWeixin);
+		return "modules/sh/weixin/register";
+	}
+	
+	
+	
 	@ModelAttribute
 	public ShWeixin get(@RequestParam(required=false) String id) {
 		ShWeixin entity = null;
