@@ -45,7 +45,7 @@ public class ShWeixinController extends BaseController {
 	 * @author hyq
 	 */
 	@RequestMapping("/authorization")
-	public String authorization(@RequestParam("code") String code,Model model) {
+	public String authorization(@RequestParam("callBackUrl") String callBackUrl,@RequestParam("code")String code,Model model) {
 		try {
 			//获取access_token
 			JSONObject access_data = WeixinUtils.code4accessToken(code);
@@ -55,7 +55,9 @@ public class ShWeixinController extends BaseController {
 			logger.error("鉴权异常!错误：{},详细:{}",e.getMessage(),e);
 		}
 		
-		return "modules/sh/weixin/test";
+//		return "modules/sh/weixin/test";
+		logger.info("菜单跳转url:---->{}",callBackUrl);
+		return callBackUrl;
 	}
 	
 	
