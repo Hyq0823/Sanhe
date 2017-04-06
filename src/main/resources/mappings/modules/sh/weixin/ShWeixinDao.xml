@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.sh.dao.weixin.ShWeixinDao">
+<mapper namespace="com.thinkgem.jeesite.modules.sh.weixin.dao.ShWeixinDao">
+                   
+    
+    <select id="getByOpenId" resultType="ShWeixin" parameterType="string">
+		SELECT 
+			<include refid="shWeixinColumns"/>
+		FROM sh_weixin a
+		<include refid="shWeixinJoins"/>
+		WHERE a.open_id = #{openid} and a.del_flag = '0' and u3.del_flag ='0'
+	</select>
+    
     
 	<sql id="shWeixinColumns">
 		a.id AS "id",
@@ -11,7 +21,8 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag"
+		a.del_flag AS "delFlag",
+		u3.user_type AS "user.userType"
 	</sql>
 	
 	<sql id="shWeixinJoins">

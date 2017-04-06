@@ -402,6 +402,11 @@ public class SystemService extends BaseService implements InitializingBean {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+	public User getUserByMobile(String mobile) {
+		return userDao.getUserByMobile(mobile);
+	}
 	
 	
 }

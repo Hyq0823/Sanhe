@@ -5,11 +5,13 @@ package com.thinkgem.jeesite.modules.sh.weixin.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.sh.weixin.entity.ShWeixin;
 import com.thinkgem.jeesite.modules.sh.weixin.dao.ShWeixinDao;
 
@@ -21,6 +23,9 @@ import com.thinkgem.jeesite.modules.sh.weixin.dao.ShWeixinDao;
 @Service
 @Transactional(readOnly = true)
 public class ShWeixinService extends CrudService<ShWeixinDao, ShWeixin> {
+	
+	@Autowired
+	private ShWeixinDao shWeixinDao;
 
 	public ShWeixin get(String id) {
 		return super.get(id);
@@ -42,6 +47,13 @@ public class ShWeixinService extends CrudService<ShWeixinDao, ShWeixin> {
 	@Transactional(readOnly = false)
 	public void delete(ShWeixin shWeixin) {
 		super.delete(shWeixin);
+	}
+
+	public ShWeixin getByOpenId(String openid) {
+		if(StringUtils.isEmpty(openid)){
+			return null;
+		}
+		return shWeixinDao.getByOpenId(openid);
 	}
 	
 }

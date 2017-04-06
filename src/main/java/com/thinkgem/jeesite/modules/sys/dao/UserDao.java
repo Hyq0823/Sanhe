@@ -72,4 +72,11 @@ public interface UserDao extends CrudDao<User> {
 	 */
 	public int updateUserInfo(User user);
 
+	/**
+	 * 根据手机号码获取用户信息
+	 * @param mobile
+	 * @return
+	 */
+	public User getUserByMobile(String mobile);
+
 }

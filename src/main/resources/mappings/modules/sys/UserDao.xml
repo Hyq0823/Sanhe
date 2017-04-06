@@ -58,6 +58,19 @@
 		</collection>
 	</resultMap> -->
 	
+	
+	
+	<select id="getUserByMobile" resultType="User">
+		SELECT 
+		<include refid="userColumns"/> 
+		FROM sys_user a
+		<include refid="userJoins"/>
+		WHERE a.del_flag = '0' and a.mobile=#{mobile}
+	</select>
+	
+	
+	
+	
     <sql id="userColumns">
     	a.id,
     	a.company_id AS "company.id",

@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.sh.weixin.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.sh.weixin.entity.ShWeixin;
@@ -14,5 +16,6 @@ import com.thinkgem.jeesite.modules.sh.weixin.entity.ShWeixin;
  */
 @MyBatisDao
 public interface ShWeixinDao extends CrudDao<ShWeixin> {
+	ShWeixin getByOpenId(@Param("openid") String openid);
 	
 }

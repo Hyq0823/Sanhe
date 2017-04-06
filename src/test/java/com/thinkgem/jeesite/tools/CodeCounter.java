@@ -36,7 +36,6 @@ public class CodeCounter {
 		System.out.println("注释行数：" + commentLines);
 		System.out.println("空白行数：" + blankLines);
 	}
-	
 	static long files = 0;
 	static long codeLines = 0;
 	static long commentLines = 0;
