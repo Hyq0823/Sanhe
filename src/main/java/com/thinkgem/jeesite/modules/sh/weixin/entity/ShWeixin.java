@@ -16,7 +16,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class ShWeixin extends DataEntity<ShWeixin> {
 	
 	private static final long serialVersionUID = 1L;
-	private String openId;		// 微信唯一标示
+	private String openid;		// 微信唯一标示
 	private User user;		// 关联的用户id
 	
 	public ShWeixin() {
@@ -26,16 +26,15 @@ public class ShWeixin extends DataEntity<ShWeixin> {
 	public ShWeixin(String id){
 		super(id);
 	}
-
-	@Length(min=0, max=64, message="微信唯一标示长度必须介于 0 和 64 之间")
-	public String getOpenId() {
-		return openId;
-	}
-
-	public void setOpenId(String openId) {
-		this.openId = openId;
-	}
 	
+	public String getOpenid() {
+		return openid;
+	}
+
+	public void setOpenid(String openid) {
+		this.openid = openid;
+	}
+
 	public User getUser() {
 		return user;
 	}

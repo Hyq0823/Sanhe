@@ -17,7 +17,10 @@
 				/static/** = anon
 				/userfiles/** = anon
 				${adminPath}/cas = cas
-				${adminPath}/weixin/**=anon
+				${adminPath}/weixin/** =anon
+				${adminPath}/sys/area/** =anon
+				${adminPath}/shApply/** =anon
+				${adminPath}/apply/** =anon
 				${adminPath}/login = authc
 				${adminPath}/logout = logout
 				${adminPath}/** = user

@@ -43,6 +43,8 @@ public class User extends DataEntity<User> {
 	private Date loginDate;	// 最后登陆日期
 	private String loginFlag;	// 是否允许登陆
 	private String photo;	// 头像
+	private String gender; //1男  0 女
+	
 
 	private String oldLoginName;// 原登录名
 	private String newPassword;	// 新密码
@@ -53,6 +55,28 @@ public class User extends DataEntity<User> {
 	private Role role;	// 根据角色查询用户条件
 	
 	private List<Role> roleList = Lists.newArrayList(); // 拥有角色列表
+
+	private String address; //地址
+	
+	
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	
+	
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
 	public User() {
 		super();

@@ -501,7 +501,7 @@ ul.nav-tabs.affix {
 						<caption>从医经历</caption>
 						<tbody>
 							<tr>
-								<td>是否具有中医执业医师资格证</td>
+								<td></td>
 								<td><select id="isPrime" name="isDocNum"
 										onchange="DocChange();">
 										<option selected="selected">请选择</option>

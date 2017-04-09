@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.sh.apply.dao.ShApplyDao">
+
+
+    
+     <select id="getListByUserId" resultType="ShApply" parameterType="string">
+		SELECT 
+			<include refid="applyAndInfo"/>
+		FROM sh_apply_info info
+		  left join sh_apply apply 
+		  on apply.apply_info_id = info.id and apply.del_flag = '0'
+		     and  	apply.user_id = #{userId} 
+		<where>
+			info.del_flag ='0' 
+		</where>
+	</select>
+    
+    <sql id="applyAndInfo">
+    	info.id as "info.id",
+    	info.name as "info.name",
+    	info.description as "info.description",
+    	info.start_time as "info.startTime",
+    	info.end_time as "info.endTime",
+    	info.parent_ids as "info.parentIds",
+    	info.parent_id as "info.parent.id",
+    	info.is_hand_confirm as "info.isHandConfirm",
+    	info.apply_num as "info.applyNum",
+    	info.share_no as "info.shareNum",
+    	case
+			  when info.start_time &gt; now() then "0"
+			  when info.end_time &lt; now() then "2"
+			  else "1" end 
+			as "info.status",
+		
+		apply.id as "id",
+		apply.apply_info_id as "applyInfoId",
+		apply.user_id as "userId",
+		apply.apply_status as "applyStatus",
+		apply.apply_no as "applyNo"
+    </sql>
+    
+    
+    
+    
+	<sql id="shApplyColumns">
+		a.id AS "id",
+		a.apply_info_id AS "applyInfoId",
+		a.apply_no AS "applyNo",
+		a.user_id AS "user.id",
+		a.apply_status AS "applyStatus",
+		u4.name AS "user.name"
+	</sql>
+	
+	<sql id="shApplyJoins">
+		LEFT JOIN sys_user u4 ON u4.id = a.user_id
+	</sql>
+    
+	<select id="get" resultType="ShApply">
+		SELECT 
+			<include refid="shApplyColumns"/>
+		FROM sh_apply a
+		<include refid="shApplyJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ShApply">
+		SELECT 
+			<include refid="shApplyColumns"/>
+		FROM sh_apply a
+		<include refid="shApplyJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ShApply">
+		SELECT 
+			<include refid="shApplyColumns"/>
+		FROM sh_apply a
+		<include refid="shApplyJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sh_apply(
+			id,
+			apply_info_id,
+			apply_no,
+			user_id,
+			apply_status
+		) VALUES (
+			#{id},
+			#{applyInfoId},
+			#{applyNo},
+			#{user.id},
+			#{applyStatus}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sh_apply SET 	
+			apply_info_id = #{applyInfoId},
+			apply_no = #{applyNo},
+			user_id = #{user.id},
+			apply_status = #{applyStatus}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sh_apply
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

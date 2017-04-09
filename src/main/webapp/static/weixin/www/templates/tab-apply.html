@@ -1,0 +1,41 @@
+<ion-view view-title="当前的报名信息 new  ">
+    <ion-content class="padding">
+       
+<!-- 报名card -->
+<div ng-repeat="apply in applys">
+<div class="list card" style="border: 1px solid #c0c0c0">
+	<div class="item item-avatar">
+	<img src="http://www.runoob.com/try/demo_source/mcfly.jpg">
+		<h2>{{apply.info.name}}</h2>
+		<p>{{apply.info.startTime}} 到 {{apply.info.endTime}}</p>
+		<ng
+		<!-- 0未开始 1进行中 2已完成 -->
+		<div style="float: right">
+			<span ng-if="apply.info.status=='0'">未开始</span>
+			<span ng-if="apply.info.status=='1'">进行中</span>
+			<span ng-if="apply.info.status=='2'">已完成</span>
+		</div>
+	</div>
+	<div class="item item-body">
+		<p>{{apply.info.description}}</p>
+		<p>
+			<a href="#" class="subdued">1 报名</a> 
+			<a href="#" class="subdued">5分享</a>
+		</p>
+	</div>
+	<div class="item tabs tabs-secondary tabs-icon-left">
+		<a class="tab-item" href="#" style="color: blue"> 
+		<i class="icon ion-thumbsup"></i> 报名</a>
+		 
+		<a class="tab-item" ng-click="share('{{apply.id}}')" style="color: blue"> 
+			<i class="icon ion-share"></i> 分享
+		</a>
+	</div>
+</div>
+</div>
+<!-- 报名card  end-->      
+
+        
+        
+    </ion-content>
+</ion-view>

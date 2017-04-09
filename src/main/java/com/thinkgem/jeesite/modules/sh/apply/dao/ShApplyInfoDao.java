@@ -14,5 +14,7 @@ import com.thinkgem.jeesite.modules.sh.apply.entity.ShApplyInfo;
  */
 @MyBatisDao
 public interface ShApplyInfoDao extends TreeDao<ShApplyInfo> {
+
+	
 	
 }

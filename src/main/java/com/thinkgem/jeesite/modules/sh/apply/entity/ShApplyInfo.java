@@ -28,10 +28,30 @@ public class ShApplyInfo extends TreeEntity<ShApplyInfo> {
 	private String isHandConfirm;		// 是否需要手动审核报名（0-否 1是）
 	
 	//程序封装的数据
-	private String status; //当前状态
+	private String status; //当前状态  0未开始 1进行中 2已完成
+	
+private int  applyNum = 0; //当前报名人数
+	
+	private int shareNum = 0;//分享人数
 	
 	
 	
+	public int getApplyNum() {
+		return applyNum;
+	}
+
+	public void setApplyNum(int applyNum) {
+		this.applyNum = applyNum;
+	}
+
+	public int getShareNum() {
+		return shareNum;
+	}
+
+	public void setShareNum(int shareNum) {
+		this.shareNum = shareNum;
+	}
+
 	public String getStatus() {
 		return status;
 	}

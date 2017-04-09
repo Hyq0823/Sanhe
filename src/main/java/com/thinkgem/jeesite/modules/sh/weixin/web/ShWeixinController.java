@@ -28,6 +28,7 @@ import com.thinkgem.jeesite.modules.sh.weixin.service.ShWeixinService;
 import com.thinkgem.jeesite.modules.sh.weixin.utils.Constant;
 import com.thinkgem.jeesite.modules.sh.weixin.utils.ResultUtils;
 import com.thinkgem.jeesite.modules.sh.weixin.utils.WeixinUtils;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.SysUtils;
@@ -43,6 +44,10 @@ public class ShWeixinController extends BaseController {
 	
 	/**注册页面*/
 	private static final String REGISTER_URL ="modules/sh/weixin/register";
+	/**信息完善界面*/
+	private static final String MSG_COMPLETE_URL ="modules/sh/weixin/InfoComplete";
+	/**个人中心*/
+	private static final String USRE_CENTER="modules/sh/weixin/personalCenter";
 
 	@Autowired
 	private ShWeixinService shWeixinService;
@@ -63,16 +68,17 @@ public class ShWeixinController extends BaseController {
 //			String openid = access_data.getString("openid");
 			
 			String openid = "1234";
+			//callBackUrl = "modules/sh/weixin/personalCenter";
 			callBackUrl = "modules/sh/weixin/personalCenter";
 			
 			//是否鉴权
-			ShWeixin shWeixin = shWeixinService.getByOpenId(openid);
-			if(shWeixin == null){
+			ShWeixin shWeixin = shWeixinService.getByOpenid(openid);
+			if(shWeixin == null || shWeixin.getUser() == null){
 				model.addAttribute("openid", openid);
 				model.addAttribute("url",callBackUrl);
 				return REGISTER_URL;
 			}
-			model.addAttribute("weixin",shWeixin);
+			model.addAttribute("userId",shWeixin.getUser().getId());
 			logger.info("菜单跳转url:---->{}",callBackUrl);
 			return callBackUrl;
 		} catch (Exception e) {
@@ -98,6 +104,21 @@ public class ShWeixinController extends BaseController {
 		}
 		return ResultUtils.success();
 	} 
+	
+	@RequestMapping("/infoComplete")
+	public String infoComplete(@RequestParam(value="openid",required=false) String openid,@RequestParam(value="url",required=false) String url
+			,@RequestParam(value="mobile",required=false) String mobile,Model model){
+		
+		if(StringUtils.isEmpty(mobile)){
+			return REGISTER_URL;
+		}
+		
+		System.out.println("进入信息完善页面");
+		model.addAttribute("openid",openid);
+		model.addAttribute("url",url);
+		model.addAttribute("mobile",mobile);
+		return MSG_COMPLETE_URL;
+	}
 	
 	/**
 	 * 微信签名
@@ -132,11 +153,10 @@ public class ShWeixinController extends BaseController {
 	}
 	
 	
-	@RequiresPermissions("weixin:shWeixin:view")
 	@RequestMapping(value = "register")
 	public String register(ShWeixin shWeixin, Model model) {
 		model.addAttribute("shWeixin", shWeixin);
-		return "modules/sh/weixin/register";
+		return REGISTER_URL;
 	}
 	
 	
@@ -177,12 +197,20 @@ public class ShWeixinController extends BaseController {
 		return "sh/weixin/shWeixinForm";
 	}
 
-	@RequiresPermissions("weixin:shWeixin:edit")
 	@RequestMapping(value = "save")
 	public String save(ShWeixin shWeixin, Model model, RedirectAttributes redirectAttributes) {
+		User user = shWeixin.getUser();
+		if(user!=null){
+			user.setPassword(SystemService.entryptPassword(user.getPassword()));
+			user.setUserType(Constant.USER_STUDENT);
+			user.setCompany(new Office("1"));
+			user.setOffice(new Office("2"));
+			systemService.saveUser(user);
+			shWeixin.setUser(user);
+		}
 		shWeixinService.save(shWeixin);
-		addMessage(redirectAttributes, "保存微信模块成功");
-		return "redirect:"+Global.getAdminPath()+"/weixin/shWeixin/?repage";
+		model.addAttribute("shWeixin", shWeixin);
+		return USRE_CENTER;
 	}
 	
 	@RequiresPermissions("weixin:shWeixin:edit")

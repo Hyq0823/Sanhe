@@ -16,6 +16,6 @@ import com.thinkgem.jeesite.modules.sh.weixin.entity.ShWeixin;
  */
 @MyBatisDao
 public interface ShWeixinDao extends CrudDao<ShWeixin> {
-	ShWeixin getByOpenId(@Param("openid") String openid);
+	ShWeixin getByOpenid(@Param("openid") String openid);
 	
 }

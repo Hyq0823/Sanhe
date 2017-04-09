@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.sys.web;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -38,6 +39,21 @@ public class AreaController extends BaseController {
 
 	@Autowired
 	private AreaService areaService;
+	
+	
+	/**
+	 *
+	 * 根据地区id，查询该地区直接下级地区
+	 */
+	@ResponseBody
+	@RequestMapping(value = "findByParentId")
+	public List<Area> findAreaByParent(HttpServletRequest request){
+		String parentId=request.getParameter("parentId");
+		List<Area> areaList = areaService.findAreByParentId(parentId);
+		return areaList;
+	}
+	
+	
 	
 	@ModelAttribute("area")
 	public Area get(@RequestParam(required=false) String id) {

@@ -16,7 +16,8 @@ var weixin={
 				
 				$("#btn_registe").attr("disabled",true);
 				console.log("get right phone and code: "+phone+" -->"+code);
-				
+				$("#hiddenMobile").val(phone);
+				$("#reg_form").submit();
 			});
 			
 			//注册点击获取验证码事件

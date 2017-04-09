@@ -49,11 +49,11 @@ public class ShWeixinService extends CrudService<ShWeixinDao, ShWeixin> {
 		super.delete(shWeixin);
 	}
 
-	public ShWeixin getByOpenId(String openid) {
+	public ShWeixin getByOpenid(String openid) {
 		if(StringUtils.isEmpty(openid)){
 			return null;
 		}
-		return shWeixinDao.getByOpenId(openid);
+		return shWeixinDao.getByOpenid(openid);
 	}
 	
 }

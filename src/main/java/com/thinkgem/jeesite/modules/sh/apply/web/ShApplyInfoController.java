@@ -22,8 +22,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.config.Global;
-import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.sh.apply.entity.ShApplyInfo;
 import com.thinkgem.jeesite.modules.sh.apply.service.ShApplyInfoService;
 
@@ -38,6 +38,7 @@ public class ShApplyInfoController extends BaseController {
 
 	@Autowired
 	private ShApplyInfoService shApplyInfoService;
+	
 	
 	@ModelAttribute
 	public ShApplyInfo get(@RequestParam(required=false) String id) {

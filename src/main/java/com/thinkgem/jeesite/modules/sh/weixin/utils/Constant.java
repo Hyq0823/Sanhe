@@ -1,6 +1,9 @@
 package com.thinkgem.jeesite.modules.sh.weixin.utils;
 
 public class Constant {
+	
+	public static String USER_STUDENT = "0";
+	
 	public static String ERROR_CODE = "errcode";
 	public static String ERROR_MSG = "errmsg";
 	public static String DATA = "data";

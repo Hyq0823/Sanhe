@@ -19,9 +19,10 @@
 <ion-content>
     <div class="kl_logo"><img src="${ctxStatic }/weixin/pic/logo_blue.png" alt=""></div>
     <br>
-    <form action="" method="post">
+    <form id="reg_form" action="${ctx }/weixin/shWeixin/infoComplete" method="post">
     	<input type="hidden" name="openid" value="${openid }">
     	<input type="hidden" name="url" value="${url}">
+    	<input id= "hiddenMobile" type="hidden" name="mobile">
         <div class="list">
             <label class="item item-input" style="border-top:none">
                 <img src="${ctxStatic }/weixin/pic/iphone.png" alt="" >

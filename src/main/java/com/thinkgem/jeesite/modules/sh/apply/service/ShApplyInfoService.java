@@ -5,13 +5,14 @@ package com.thinkgem.jeesite.modules.sh.apply.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.service.TreeService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.modules.sh.apply.entity.ShApplyInfo;
 import com.thinkgem.jeesite.modules.sh.apply.dao.ShApplyInfoDao;
+import com.thinkgem.jeesite.modules.sh.apply.entity.ShApplyInfo;
 
 /**
  * 报名信息Service
@@ -21,6 +22,9 @@ import com.thinkgem.jeesite.modules.sh.apply.dao.ShApplyInfoDao;
 @Service
 @Transactional(readOnly = true)
 public class ShApplyInfoService extends TreeService<ShApplyInfoDao, ShApplyInfo> {
+	
+	@Autowired
+	private ShApplyInfoDao shApplyInfoDao;
 
 	public ShApplyInfo get(String id) {
 		return super.get(id);
@@ -42,5 +46,7 @@ public class ShApplyInfoService extends TreeService<ShApplyInfoDao, ShApplyInfo>
 	public void delete(ShApplyInfo shApplyInfo) {
 		super.delete(shApplyInfo);
 	}
+
+	
 	
 }

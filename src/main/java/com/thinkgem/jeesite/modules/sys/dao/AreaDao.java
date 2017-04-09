@@ -3,6 +3,10 @@
  */
 package com.thinkgem.jeesite.modules.sys.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.thinkgem.jeesite.common.persistence.TreeDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.sys.entity.Area;
@@ -14,5 +18,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Area;
  */
 @MyBatisDao
 public interface AreaDao extends TreeDao<Area> {
+
+	public List<Area> findByParentId(@Param("parentId")String parentId);
 	
 }
