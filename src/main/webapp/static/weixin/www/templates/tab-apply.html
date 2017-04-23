@@ -19,12 +19,12 @@
 	<div class="item item-body">
 		<p>{{apply.info.description}}</p>
 		<p>
-			<a href="#" class="subdued">1 报名</a> 
-			<a href="#" class="subdued">5分享</a>
+			<a href="#" class="subdued">{{apply.info.applyNum}} 报名</a> 
+			<a href="#" class="subdued">{{apply.info.shareNum}}分享</a>
 		</p>
 	</div>
 	<div class="item tabs tabs-secondary tabs-icon-left">
-		<a class="tab-item" href="#" style="color: blue"> 
+		<a class="tab-item" href="#" style="color: blue" direcApply ng-click="askToapply('{{apply.info.id}}','{{apply.info.isHandConfirm}}')"> 
 		<i class="icon ion-thumbsup"></i> 报名</a>
 		 
 		<a class="tab-item" ng-click="share('{{apply.id}}')" style="color: blue"> 

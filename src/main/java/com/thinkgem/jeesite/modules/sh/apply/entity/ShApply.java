@@ -11,17 +11,30 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
 public class ShApply extends DataEntity<ShApply> {
 	
 	private static final long serialVersionUID = 1L;
-//	private String applyInfoId;		// 报名信息id
+//	private String applyInfoId;	// 报名信息id
 	/**报名信息id*/
 	private ShApplyInfo info;
 	private String applyNo;		// 报名号
 	private String userId;		// 考生id
-	private String applyStatus;		// 报名状态（0待审核 1已通过 2未通过）
+	private String applyStatus;		//报名状态（ 0待审核    1已通过    2未通过   ）
 	
-	public static String STANDBY_ENSURE = "0";//"待审核";
+	public static String STANDBY_ENSURE = "0"; //"待审核";
 	public static String PASS = "1";// "已通过";
 	public static String FAIL = "2";//"未通过";
 	
+	
+	
+	
+	/**
+	 * @param infoId 报名信息id
+	 * @param userId用户id
+	 */
+	public ShApply(String infoId, String userId) {
+		super();
+		this.info = new ShApplyInfo(infoId);
+		this.userId = userId;
+	}
+
 	public ShApply() {
 		super();
 	}

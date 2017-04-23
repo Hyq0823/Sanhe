@@ -44,6 +44,11 @@
 			<div class="controls">
 				<form:input path="sort" htmlEscape="false" maxlength="10" class="input-xlarge  digits"/>
 			</div>
+			<div class="control-group">
+			<label class="control-label">报名人数：</label>
+			<div class="controls">
+				<form:input path="limitNum"  onkeyup="value=value.replace(/[^\d]/g,'')" htmlEscape="false" maxlength="10" class="input-xlarge  digits"/>
+			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">报名描述：</label>

@@ -3,7 +3,9 @@ angular.module('starter.controllers', [])
 .controller('DashCtrl', function($scope) {})
 .controller('ApplyCtrl', function($scope,$http) {
 	$scope.userId=localStorage.getItem("userId");
-	var applys_url = "http://localhost:8080/Exam/a/shApply/applys?userId="+$scope.userId;//报名
+	var base_url = "http://localhost:8080/Exam/a/shApply/";
+	
+	var applys_url = base_url+"applys?userId="+$scope.userId;//报名
 	console.log("我的报名url: "+applys_url);
 	 $http({
 	        method: 'POST',
@@ -18,9 +20,31 @@ angular.module('starter.controllers', [])
 	    });
 	 
 	 
-	 $scope.share=function(){
+	 $scope.askToapply=function(infoId,isHandConfirm){
+		 var askApplyUrl =base_url+infoId+"/ask/"+$scope.userId; 
+		 $http({
+		        method: 'POST',
+		        url: askApplyUrl,
+		        params:{'isHandConfirm':isHandConfirm},
+		    }).then(function successCallback(response) {//如何在这里接受到数据后，实现toast？用指令吗？
+		            console.log(response.data.errmsg);
+		            alert(response.data.errcode+": "+response.data.errmsg);
+		        }, function errorCallback(response) {
+		            // 请求失败执行代码
+		    });
+	 }
+ $scope.share=function(){
 		 
 	 }
+}).directive("direcApply",function(){
+	return {
+		restict: "A",
+		link:function(scope,elem,attrs){
+			$(elem).click(function(){
+				console.log("厉害了！");
+			});
+		}
+	}
 })
 
 .controller('ChatsCtrl', function($scope, Chats) {

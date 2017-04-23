@@ -20,8 +20,19 @@
 		a.update_date AS "updateDate",
 		a.update_by AS "updateBy.id",
 		a.del_flag AS "delFlag",
-		a.remarks AS "remarks"
+		a.remarks AS "remarks",
+		a.limitNum as "limitNum",
+		a.share_no as "shareNum",
+		a.apply_num as "applyNum"
 	</sql>
+	
+	
+	
+	<update id="increaseApplyNum" parameterType="string">
+		UPDATE sh_apply_info SET 	
+			applyNum = applyNum + 1
+		WHERE id = #{infoId}
+	</update>
 	
 	<sql id="shApplyInfoJoins">
 	</sql>
@@ -106,7 +117,10 @@
 			update_date,
 			update_by,
 			del_flag,
-			remarks
+			remarks,
+			apply_num,
+			share_no,
+			limitNum
 		) VALUES (
 			#{id},
 			#{name},
@@ -122,7 +136,10 @@
 			#{updateDate},
 			#{updateBy.id},
 			#{delFlag},
-			#{remarks}
+			#{remarks},
+			#{applyNum},
+			#{shareNum},
+			#{limitNum}
 		)
 	</insert>
 	
@@ -138,7 +155,11 @@
 			is_hand_confirm = #{isHandConfirm},
 			update_date = #{updateDate},
 			update_by = #{updateBy.id},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			apply_num =#{applyNum},
+			share_no =#{shareNum},
+			limitNum =#{limitNum}
+			
 		WHERE id = #{id}
 	</update>
 	

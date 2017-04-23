@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +37,8 @@ import com.thinkgem.jeesite.modules.cms.service.CommentService;
 import com.thinkgem.jeesite.modules.cms.service.LinkService;
 import com.thinkgem.jeesite.modules.cms.service.SiteService;
 import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
+import com.thinkgem.jeesite.modules.sh.apply.entity.ShApplyInfo;
+import com.thinkgem.jeesite.modules.sh.apply.service.ShApplyInfoService;
 
 /**
  * 网站Controller
@@ -58,6 +61,22 @@ public class FrontController extends BaseController{
 	private CategoryService categoryService;
 	@Autowired
 	private SiteService siteService;
+	@Autowired
+	private ShApplyInfoService shApplyInfoService;
+	
+	
+	@RequestMapping(value = {"apply/shApplyInfo"})
+	public String list(ShApplyInfo shApplyInfo, HttpServletRequest request, HttpServletResponse response, Model model) {
+		
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		
+		List<ShApplyInfo> list = shApplyInfoService.findList(shApplyInfo); 
+		model.addAttribute("list", list);
+		return "modules/cms/front/themes/"+site.getTheme()+"/applyInfoList";
+	}
+	
+	
 	
 	/**
 	 * 网站首页
@@ -69,6 +88,7 @@ public class FrontController extends BaseController{
 		model.addAttribute("isIndex", true);
 		return "modules/cms/front/themes/"+site.getTheme()+"/frontIndex";
 	}
+	
 	
 	/**
 	 * 网站首页

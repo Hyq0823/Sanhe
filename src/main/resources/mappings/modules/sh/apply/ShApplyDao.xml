@@ -1,7 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.sh.apply.dao.ShApplyDao">
-
+  <select id="findByCondition" resultType="ShApply">
+  		select
+  		 <include refid="applyBaseColumn" /> 
+  		 from sh_apply a  
+  		 <where>
+  		 	<if test="info.id!=null and info.id != '' ">
+  		 	  a.apply_info_id = #{info.id}
+  		 	</if>
+  		 	<if test="applyNo!=null and applyNo != '' ">
+  		 	and   a.apply_no = #{applyNo}
+  		 	</if>
+  		 	<if test="userId!=null and userId != '' ">
+  		 	  and a.user_id = #{userId}
+  		 	</if>
+  		 	<if test="applyStatus !=null and applyStatus != '' ">
+	and a.apply_status = #{applyStatus}
+  		 	</if>
+  		 	
+  		 </where> 
+  </select>
+  
+  <sql id="applyBaseColumn">
+		a.id AS "id",
+		a.apply_info_id AS "info.id",
+		a.apply_no AS "applyNo",
+		a.user_id AS "userId",
+		a.apply_status AS "applyStatus"
+	</sql>
+  
 
     
      <select id="getListByUserId" resultType="ShApply" parameterType="string">
@@ -10,9 +38,13 @@
 		FROM sh_apply_info info
 		  left join sh_apply apply 
 		  on apply.apply_info_id = info.id and apply.del_flag = '0'
-		     and  	apply.user_id = #{userId} 
+		     and  apply.user_id = #{userId} 
 		<where>
-			info.del_flag ='0' 
+			info.del_flag ='0'  and (
+			 (info.parent_id is null or info.parent_id = '0') or
+			    info.id in
+			    (select id from sh_apply_info  where parent_id = info.id and  
+			     ( apply.user_id is not null and apply.apply_status = '1')))			
 		</where>
 	</select>
     
@@ -107,9 +139,9 @@
 			apply_status
 		) VALUES (
 			#{id},
-			#{applyInfoId},
+			#{info.id},
 			#{applyNo},
-			#{user.id},
+			#{userId},
 			#{applyStatus}
 		)
 	</insert>

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +25,8 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.sh.apply.entity.ShApply;
 import com.thinkgem.jeesite.modules.sh.apply.service.ShApplyService;
+import com.thinkgem.jeesite.modules.sh.weixin.utils.Constant;
+import com.thinkgem.jeesite.modules.sh.weixin.utils.ResultUtils;
 
 /**
  * 报名表Controller
@@ -37,9 +40,24 @@ public class ShApplyController extends BaseController {
 	@Autowired
 	private ShApplyService shApplyService;
 	
+	
+	@RequestMapping("/{infoId}/ask/{userId}")
+	@ResponseBody
+	public String apply(@PathVariable("infoId") String infoId,@PathVariable("userId") String userId
+			,@RequestParam("isHandConfirm") String isHandConfirm){
+		ShApply getApply = shApplyService.findApplyByInfoIdAndUserId(infoId,userId);
+		if(getApply!=null){//已经报过名了
+			return ResultUtils.response(Constant.APPLY_ALREADY_CODE, Constant.APPLY_ALREADY_MSG, null);
+		}
+		shApplyService.firstSaveApply(infoId,userId,isHandConfirm);
+		return ResultUtils.success();
+	}
+	
 	/**
 	 * 我的报名
 	 * @return
+	 * 报名信息表 parentId为null的：人人都能报名
+	 *  和在报名表中已通过的报名 的下级
 	 */
 	@RequestMapping("/applys")
 	@ResponseBody
@@ -52,7 +70,7 @@ public class ShApplyController extends BaseController {
 	
 	
 	@ModelAttribute
-	public ShApply get(@RequestParam(required=false) String id) {
+	public ShApply get(@RequestParam(required=false) String id){
 		ShApply entity = null;
 		if (StringUtils.isNotBlank(id)){
 			entity = shApplyService.get(id);

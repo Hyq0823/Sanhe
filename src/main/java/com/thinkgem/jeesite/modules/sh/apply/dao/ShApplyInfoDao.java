@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.sh.apply.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.thinkgem.jeesite.common.persistence.TreeDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.sh.apply.entity.ShApplyInfo;
@@ -14,6 +16,8 @@ import com.thinkgem.jeesite.modules.sh.apply.entity.ShApplyInfo;
  */
 @MyBatisDao
 public interface ShApplyInfoDao extends TreeDao<ShApplyInfo> {
+
+	void increaseApplyNum(@Param("infoId") String infoId);
 
 	
 	

@@ -22,5 +22,12 @@ public interface ShApplyDao extends CrudDao<ShApply> {
 	 * @return
 	 */
 	List<ShApply> getListByUserId(@Param("userId")String userId);
+
+	/**
+	 * 条件查询
+	 * @param apply
+	 * @return
+	 */
+	List<ShApply>  findByCondition(ShApply apply);
 	
 }

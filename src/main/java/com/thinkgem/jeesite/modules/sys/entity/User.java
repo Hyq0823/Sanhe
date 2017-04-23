@@ -59,6 +59,7 @@ public class User extends DataEntity<User> {
 	private String address; //地址
 	
 	
+	
 
 	public String getAddress() {
 		return address;

@@ -4,6 +4,8 @@
 package com.thinkgem.jeesite.modules.sh.apply.entity;
 
 import org.hibernate.validator.constraints.Length;
+
+import java.text.NumberFormat;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -30,12 +32,50 @@ public class ShApplyInfo extends TreeEntity<ShApplyInfo> {
 	//程序封装的数据
 	private String status; //当前状态  0未开始 1进行中 2已完成
 	
-private int  applyNum = 0; //当前报名人数
+	private int limitNum = 100; //报名限制人数
+	
+	private int  applyNum = 0; //当前报名人数
 	
 	private int shareNum = 0;//分享人数
 	
+	//程序用
+	private String applyPercent;
 	
 	
+	
+	public void setApplyPercent(String applyPercent) {
+		this.applyPercent = applyPercent;
+	}
+
+	public static void main(String[] args) {
+		int a = 1;
+		int count = 200;
+		NumberFormat numberFormat = NumberFormat.getInstance();
+		numberFormat.setMaximumFractionDigits(2);
+		String result = numberFormat.format((float) a / (float) count * 100);
+//		System.out.println("结果:"+(float)a/(float)count * 100 +"%");
+		System.out.println("结果:"+result+"%");
+	}
+	
+	/**
+	 * 报名进度百分比
+	 * @return
+	 */
+	public String getApplyPercent(){
+		NumberFormat numberFormat = NumberFormat.getInstance();
+		numberFormat.setMaximumFractionDigits(2);
+		applyPercent = numberFormat.format((float) applyNum / (float) limitNum * 100);
+		return applyPercent;
+	}
+	
+	public int getLimitNum() {
+		return limitNum;
+	}
+
+	public void setLimitNum(int limitNum) {
+		this.limitNum = limitNum;
+	}
+
 	public int getApplyNum() {
 		return applyNum;
 	}
