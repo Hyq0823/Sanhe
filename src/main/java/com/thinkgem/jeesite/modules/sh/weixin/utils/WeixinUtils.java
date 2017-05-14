@@ -11,7 +11,10 @@ import org.activiti.engine.impl.util.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.opensymphony.module.sitemesh.taglib.page.ApplyDecoratorTag;
 import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.modules.sh.apply.entity.ShApplyInfo;
 import com.thinkgem.jeesite.modules.sys.utils.ConstUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysUtils;
 
@@ -21,18 +24,13 @@ public class WeixinUtils {
 	
 	
 	private static Logger logger = LoggerFactory.getLogger(WeixinUtils.class);
-	
-	
-	
 	private static final String ACCESS_TOKEN = "access_token";
-	
 	private static final String ACCESS_TIME = "access_time";
-	
 	private static final String TICKET = "ticket";
-	
 	private static final String TICKET_TIME = "ticket_time";
 	// 获取access_token的请求链接
-	private static final String getAccessTokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+SysUtils.getPropertyByName("wexin.appid")+"&secret="+SysUtils.getPropertyByName("wexin.appSecret");
+	private static  String getAccessTokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=@1&secret=@2";
+	
 	// 获取ticket的请求链接1
 	private static String getTicketTokenUrl1 = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=";
 	// 获取ticket的请求链接2
@@ -52,12 +50,13 @@ public class WeixinUtils {
 	 * 微信发送模板消息接口调用地址
 	 */
 	private static final String SHARE_TEMP_PATH = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=";
-	
 
 	/**
 	 * 分享的资源的打开连接2
 	 */
 	private static final String SHARE_TEMP_OPEN_PATH2 = "&userOpenId=";
+	
+	
 	
 	
 	
@@ -82,12 +81,12 @@ public class WeixinUtils {
 	public static boolean checkSignature(String signature, String timestamp,
 			String nonce) {
 		 String[] arr = new String[] { AUTHTOKEN, timestamp, nonce };
-	        Arrays.sort(arr);
+	        Arrays.sort(arr);//排序
 	        StringBuilder content = new StringBuilder();
 	        for (int i = 0; i < arr.length; i++) {
 	            content.append(arr[i]);
 	        }
-	        String tmpStr = SHA1(content.toString());
+	        String tmpStr = SHA1(content.toString());//SHA1签名校验
 	        return tmpStr != null ? tmpStr.equalsIgnoreCase(signature) : false;
 	}
 	
@@ -142,13 +141,6 @@ public class WeixinUtils {
 		}
 		return data;
 	}
-	
-	
-	
-	
-	
-	
-	
 	//==========================================================================================
 	/**
 	 * 刷新access_token
@@ -157,6 +149,13 @@ public class WeixinUtils {
 	private static void refreshAccessToken() {
 		try {
 			System.out.println("更新access_token");
+			System.out.println(getAccessTokenUrl);
+			getAccessTokenUrl = getAccessTokenUrl.replace("@1",SysUtils.getPropertyByName("weixin.appid"))
+					.replace("@2", SysUtils.getPropertyByName("weixin.secret"));
+			
+			System.out.println(getAccessTokenUrl);
+			System.out.println(getAccessTokenUrl);
+			
 			String resultStr = HttpUtils.doGet(getAccessTokenUrl);
 			System.out.println(resultStr);
 			JSONObject result = new JSONObject(resultStr);
@@ -296,43 +295,57 @@ public class WeixinUtils {
 	 * remark
 	 * @return
 	 */
-//	public static String msgShare(String name, String describe, String num, String openId, String msgId,String studentNames,String activityName) {
-//		String accessToken = getJsToken();
-//		// 拼接数据
-//		JSONObject data = new JSONObject();
-//        data.put("touser", openId);
-//        data.put("template_id", SHARE_TEMP_ID);
-//        data.put("url", SHARE_TEMP_OPEN_PATH1 + msgId + SHARE_TEMP_OPEN_PATH2 + openId);
-//        JSONObject content = new JSONObject();
-//        JSONObject first = new JSONObject();
-//        first.put("value", "您好，请家长陪同孩子完成以下亲子活动");
-//        JSONObject keyword1 = new JSONObject();
-//        keyword1.put("value", studentNames);
-//        JSONObject keyword2 = new JSONObject();
-//        keyword2.put("value", name);
-//        JSONObject keyword3 = new JSONObject();
-//        keyword3.put("value", describe);
-//        JSONObject remarks = new JSONObject();
-//        remarks.put("value", "活动结束，请孩子向家长说出活动的感受");
-//        content.put("first", first);
-//        content.put("keyword1", keyword1);
-//        content.put("keyword2", keyword2);
-//        content.put("keyword3", keyword3); 
-//        content.put("remark", remarks);
-//        data.put("data", content);
+	public static String msgShare(String openId,ShApplyInfo info) {
+		String accessToken = getJsToken();
+		// 拼接数据
+		JSONObject data = new JSONObject(); 
+		data.put("template_id",SysUtils.getPropertyByName("weixin.share_temp_id"));//发送的模版id
+        data.put("touser", openId);//用户的openid
         
-//        try {
-//			String resultStr = HttpUtils.doPost(SHARE_TEMP_PATH + accessToken, data);
-//			JSONObject result = new JSONObject(resultStr);
-//			if(result.getInt("errcode") == 0) { // 发送成功
-//				return "0";
-//			} else { // 发送失败
-//				return String.valueOf(result.getInt("errcode"));
-//			}
-//        } catch (Exception e) {
-//			e.printStackTrace();
-//			return "Send Msg Error";
-//		}
-        
-//	}
+        JSONObject content = new JSONObject();
+        	JSONObject first = new JSONObject();
+        	first.put("value", "您好,您收到一条新发布的报名通知");
+
+        	//报名标题
+        	JSONObject applyNameJson = new JSONObject();
+        	applyNameJson.put("value", info.getName());
+        	
+        	//报名开始时间
+        	JSONObject startTimeJson = new JSONObject();
+        	startTimeJson.put("value", DateUtils.formatDate(info.getStartTime(), "yyyy-MM-dd HH:mm:ss"));
+        	
+        	//报名结束时间
+        	JSONObject endTimeJson = new JSONObject();
+        	endTimeJson.put("value", DateUtils.formatDate(info.getEndTime(), "yyyy-MM-dd HH:mm:ss"));
+        	
+        	//报名详情
+        	JSONObject descJson = new JSONObject();
+        	descJson.put("value", info.getDescription());
+        	
+        	//报名备注
+        	JSONObject remarkJson = new JSONObject();
+        	remarkJson.put("value", info.getRemarks());
+        	
+        	
+        content.put("name", applyNameJson);
+        content.put("startTime", startTimeJson);
+        content.put("endTime", endTimeJson);
+        content.put("description", descJson); 
+        content.put("remarks", remarkJson);
+        data.put("data", content);
+      
+        try {
+			String resultStr = HttpUtils.doPost(SHARE_TEMP_PATH + accessToken, data);
+			JSONObject result = new JSONObject(resultStr);
+			if(result.getInt("errcode") == 0) { // 发送成功
+				return "0";
+			} else { // 发送失败
+				return String.valueOf(result.getInt("errcode"));
+			}
+        } catch (Exception e) {
+			e.printStackTrace();
+			return "Send Msg Error";
+		}
+      
+	}
 }

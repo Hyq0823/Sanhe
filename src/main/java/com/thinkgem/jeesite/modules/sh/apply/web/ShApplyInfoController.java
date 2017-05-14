@@ -26,6 +26,9 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.sh.apply.entity.ShApplyInfo;
 import com.thinkgem.jeesite.modules.sh.apply.service.ShApplyInfoService;
+import com.thinkgem.jeesite.modules.sh.weixin.entity.ShWeixin;
+import com.thinkgem.jeesite.modules.sh.weixin.service.ShWeixinService;
+import com.thinkgem.jeesite.modules.sh.weixin.utils.WeixinUtils;
 
 /**
  * 报名信息Controller
@@ -38,6 +41,9 @@ public class ShApplyInfoController extends BaseController {
 
 	@Autowired
 	private ShApplyInfoService shApplyInfoService;
+	
+	@Autowired
+	private ShWeixinService shWeixinService;
 	
 	
 	@ModelAttribute
@@ -92,6 +98,16 @@ public class ShApplyInfoController extends BaseController {
 			return form(shApplyInfo, model);
 		}
 		shApplyInfoService.save(shApplyInfo);
+		
+		List<ShWeixin> weixinList = shWeixinService.findList(new ShWeixin());
+			for(int i =0;weixinList!=null&&i<weixinList.size();i++){
+				ShWeixin shWeixin = weixinList.get(i);
+				if(shWeixin==null){
+					continue;
+				}
+				WeixinUtils.msgShare(shWeixin.getOpenid(), shApplyInfo);
+			}
+		
 		addMessage(redirectAttributes, "保存报名信息成功");
 		return "redirect:"+Global.getAdminPath()+"/apply/shApplyInfo/?repage";
 	}

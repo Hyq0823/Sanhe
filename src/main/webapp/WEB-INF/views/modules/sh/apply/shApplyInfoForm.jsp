@@ -67,7 +67,7 @@
 		<div class="control-group">
 			<label class="control-label">结束时间：</label>
 			<div class="controls">
-				<input name="endTime" id="endTime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
+				<input name="endTime" id="endTime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
 					value="<fmt:formatDate value="${shApplyInfo.endTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false,minDate:'#F{$dp.$D(\'startTime\')}'});"/>
 			</div>

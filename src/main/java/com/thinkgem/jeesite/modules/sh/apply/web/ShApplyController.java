@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -39,6 +40,20 @@ public class ShApplyController extends BaseController {
 
 	@Autowired
 	private ShApplyService shApplyService;
+	
+	@RequestMapping(value = "update")
+	@ResponseBody
+	public String update(HttpServletRequest request, @RequestParam(value = "file", required = false) 
+	MultipartFile file,
+	        String name) {
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		System.out.println(name);
+		return null;
+	 
+	    }
+	
 	
 	
 	@RequestMapping("/{infoId}/ask/{userId}")

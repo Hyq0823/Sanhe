@@ -87,7 +87,7 @@ public class RoleController extends BaseController {
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
 			return "redirect:" + adminPath + "/sys/role/?repage";
 		}
-		if (!beanValidator(model, role)){
+		if (!beanValidator(model, role)){//服务端参数校验
 			return form(role, model);
 		}
 		if (!"true".equals(checkName(role.getOldName(), role.getName()))){
